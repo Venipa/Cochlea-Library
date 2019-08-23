@@ -11,5 +11,11 @@
             "name": "Venipa",
             "email": "admin@venipa.net"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-0": {
+            "Cochlea":        "src/",
+            "Cochlea\\Models": "src/Models/"
+        }
+    }
 }

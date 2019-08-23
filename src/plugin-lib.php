@@ -1,6 +1,6 @@
 <?php
 
-namespace Cochlea\Plugin;
+namespace Cochlea;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
