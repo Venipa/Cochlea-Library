@@ -1,0 +1,15 @@
+{
+    "name": "venipa/mybb-cochlea-lib",
+    "type": "mybb-plugin",
+    "require": {
+        "illuminate/database": "^5.8",
+        "illuminate/events": "^5.8"
+    },
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "Venipa",
+            "email": "admin@venipa.net"
+        }
+    ]
+}
