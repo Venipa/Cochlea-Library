@@ -9,6 +9,7 @@ use Illuminate\Container\Container;
 class PluginBase
 {
     protected $config;
+    /** @var Capsule $database */
     protected $database;
     protected $plugins;
     /** @var DB_Base $db */
@@ -17,11 +18,11 @@ class PluginBase
     protected $myBB;
     protected $pluginInfo;
     public $pluginHooks = [];
-    public function __construct($config, $pluginInfo = [])
+    public function __construct($pluginInfo)
     {
         $this->pluginInfo = $pluginInfo;
-        $this->config = $config;
         $this->myBB = $this->getCore();
+        $this->config = $this->myBB->config;
         $this->db = $this->getDatabase();
         $this->plugins = $this->getPlugins();
         $this->initialize();
@@ -38,6 +39,7 @@ class PluginBase
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => $config['table_prefix'],
+            'engine'    => 'InnoDB'
         ]);
         $this->database->setEventDispatcher(new Dispatcher(new Container));
         $this->database->setAsGlobal();
