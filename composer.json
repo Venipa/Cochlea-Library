@@ -3,7 +3,8 @@
     "type": "mybb-plugin",
     "require": {
         "illuminate/database": "^5.8",
-        "illuminate/events": "^5.8"
+        "illuminate/events": "^5.8",
+        "larapack/dd": "^1.1"
     },
     "license": "GPLv3",
     "authors": [

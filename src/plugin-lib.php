@@ -10,21 +10,24 @@ class PluginBase
 {
     protected $config;
     protected $database;
-    /** @var pluginSystem $plugins */
     protected $plugins;
     /** @var DB_Base $db */
     protected $db;
     /** @var MyBB $myBB */
     protected $myBB;
-    public function __construct($config)
+    protected $pluginInfo;
+    public $pluginHooks = [];
+    public function __construct($config, $pluginInfo = [])
     {
+        $this->pluginInfo = $pluginInfo;
         $this->config = $config;
         $this->myBB = $this->getCore();
         $this->db = $this->getDatabase();
         $this->plugins = $this->getPlugins();
-        $this->initialize($config["database"]);
+        $this->initialize();
     }
-    private function initialize($config) {
+    protected function initialize() {
+        $config = $this->config["database"];
         $this->database = new Capsule;
         $this->database->addConnection([
             'driver'    => 'mysql',
@@ -48,7 +51,6 @@ class PluginBase
     protected function getCapsuleDatabase() {
         return $this->database;
     }
-    /** @return pluginSystem */
     public function getPlugins()
     {
         global $plugins;
@@ -65,5 +67,35 @@ class PluginBase
     {
         global $mybb;
         return $mybb;
+    }
+    public function addHook($name, $func) {
+        $this->pluginHooks[$name] = $func;
+    }
+    public function removeHook($name) {
+        unset($this->pluginHooks[$name]);
+    }
+    public function onHook(...$args) {
+        $hookName = $this->plugins->current_hook;
+        if(isset($this->pluginHooks[$hookName]) && is_callable($this->pluginHooks[$hookName])) {
+            return $this->pluginHooks[$hookName]($args);
+        }
+        return false;
+    }
+    public function getHookAssignments()
+    {
+        $hookNames = array_keys($this->pluginHooks);
+        $fnSetter = [];
+        foreach($hookNames as $hkName) {
+            $fnSetter[$hkName] = "onHook";
+        }
+        return $fnSetter;
+    }
+    public function registerHooks()
+    {
+        $codeName = $this->pluginInfo["codename"];
+        $hookAssignments = $this->getHookAssignments();
+        foreach ($hookAssignments as $hookKey => $methodName) {
+            $this->plugins->add_hook($hookKey, $codeName . "_" . $methodName);
+        }
     }
 }
