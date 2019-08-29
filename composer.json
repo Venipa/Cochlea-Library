@@ -1,22 +1,25 @@
 {
-    "name": "venipa/mybb-cochlea-lib",
-    "type": "mybb-plugin",
-    "require": {
-        "illuminate/database": "^5.8",
-        "illuminate/events": "^5.8",
-        "larapack/dd": "^1.1"
-    },
-    "license": "GPLv3",
-    "authors": [
-        {
-            "name": "Venipa",
-            "email": "admin@venipa.net"
-        }
-    ],
-    "autoload": {
-        "psr-0": {
-            "Cochlea":        "src/",
-            "Cochlea\\Models": "src/Models/"
-        }
+  "name": "venipa/mybb-cochlea-lib",
+  "type": "mybb-plugin",
+  "require": {
+    "illuminate/database": "^5.8",
+    "illuminate/events": "^5.8",
+    "larapack/dd": "^1.1",
+    "illuminate/pagination": "^5.8",
+    "illuminate/validation": "^5.8"
+  },
+  "license": "GPLv3",
+  "authors": [
+    {
+      "name": "Venipa",
+      "email": "admin@venipa.net"
     }
+  ],
+  "autoload": {
+    "psr-0": {
+      "Cochlea": "src/",
+      "Cochlea\\Models": "src/Models/",
+      "Cochlea\\Controllers": "src/Controllers/"
+    }
+  }
 }

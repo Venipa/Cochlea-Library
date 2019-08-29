@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class MyBBTemplates extends Model {
     protected $table = "templates";
-    protected $guarded = ["id"];
+    protected $guarded = ["tid"];
     public $timestamps = false;
+    protected $primaryKey = 'tid';
 }
