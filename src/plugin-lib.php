@@ -108,6 +108,14 @@ class PluginBase
             return forward_static_call([$class, $method], $args);
         };
     }
+    public function setAuthXHRHook(string $action, callable $func) {
+        $this->xhrHooks["{$this->pluginInfo->codename}_" . $action] = function(...$args) use ($func) {
+            if (!$this->myBB->user['uid']) {
+                return ["error" => "Not Authenticated"];
+            }
+            return $func($args);
+        };
+    }
     public function setXHRHook(string $action, callable $func)
     {
         $this->xhrHooks["{$this->pluginInfo->codename}_" . $action] = $func;
@@ -189,6 +197,9 @@ class PluginBase
             $models[] = $func($seed);
         }
         return collect($models);
+    }
+    public function readJSONBody() {
+        return @json_decode(($stream = fopen('php://input', 'r')) !== false ? stream_get_contents($stream) : "{}");
     }
     /**
      * Gets $_POST/Post Value

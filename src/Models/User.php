@@ -18,4 +18,10 @@ class MyBBUsers extends Model {
     public function userGroup() {
         return $this->hasOne(MyBBUserGroup::class, 'gid', 'usergroup');
     }
+    /**
+     * Cochlea Ticket System must be Installed
+     */
+    public function userTickets() {
+        return $this->hasMany("Cochlea\TicketSystem\Models\Ticket", 'userId', $this->primaryKey);
+    }
 }
