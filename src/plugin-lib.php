@@ -27,9 +27,11 @@ class PluginBase
     protected $pluginInfo;
     public $pluginHooks = [];
     public $xhrHooks = [];
-    public function __construct($pluginInfo)
+    public function __construct($pluginInfo = null)
     {
-        $this->pluginInfo = $pluginInfo;
+        if ($pluginInfo) {
+            $this->pluginInfo = $pluginInfo;
+        }
         if (isset($pluginInfo["config"])) {
             $this->pluginConfig = $pluginInfo["config"];
         }

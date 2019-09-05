@@ -24,4 +24,7 @@ class MyBBUsers extends Model {
     public function userTickets() {
         return $this->hasMany("Cochlea\TicketSystem\Models\Ticket", 'userId', $this->primaryKey);
     }
+    public function getAvatarUrl($mybb) {
+        return $mybb->get_asset_url($this->uid);
+    }
 }
