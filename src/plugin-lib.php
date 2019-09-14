@@ -2,6 +2,7 @@
 
 namespace Cochlea;
 
+use Cochlea\Models\MyBBTemplates;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
@@ -99,7 +100,7 @@ class PluginBase
     }
     public function addHook(string $name, callable $func)
     {
-        $this->pluginHooks[$name] = $func;
+        $this->pluginHooks[$name][] = $func;
     }
     /**
      * TODO: Fix Instance "this"
@@ -161,8 +162,13 @@ class PluginBase
                 }
             }
         }
-        if (isset($this->pluginHooks[$hookName]) && is_callable($this->pluginHooks[$hookName])) {
-            return $this->pluginHooks[$hookName]($args);
+        if (isset($this->pluginHooks[$hookName]) && is_array($this->pluginHooks[$hookName])) {
+            foreach($this->pluginHooks[$hookName] as $func) {
+                if (is_callable($func)) {
+                    $func($args);
+                }
+            }
+            return true;
         }
         return false;
     }
@@ -240,5 +246,32 @@ class PluginBase
             $key = $keys;
             return isset($_GET[$key]) ? $_GET[$key] : (is_callable($default) ? $default() : $default);
         }
+    }
+    public function getTemplate($name, $options = null, ...$args) {
+        global $mybb, $db, $header, $footer, $headerinclude, $modcp_nav, $cache, $lang, $templates;
+        if ($options != null) {
+            if (isset($options["globals"]) && is_array($options["globals"])) {
+                foreach($options["globals"] as $__globalkey__ => $__global__) {
+                    global $$__globalkey__;
+                    $$__globalkey__ = $__global__;
+    
+                }
+            }
+        }
+        $templateModel = $templates->get($name);
+        if ($templateModel == null) {
+            return null;
+        }
+        
+        return eval("return \"". $templateModel ."\";"); 
+    }
+    public function updateTemplate($name, $html, ...$args) {
+        $templateModel = MyBBTemplates::where('title', $name)->first();
+        if ($templateModel == null) {
+            return false;
+        }
+        $templateModel->template = $html;
+        $templateModel->save();
+        return $templateModel->parseTemplate($args);
     }
 }
