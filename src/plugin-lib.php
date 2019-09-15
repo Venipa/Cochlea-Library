@@ -156,9 +156,9 @@ class PluginBase
             if (in_array("{$this->pluginInfo->codename}_" . $this->myBB->get_input('action'), array_keys($this->xhrHooks))) {
                 $action = $this->myBB->get_input('action');
                 $dataReturn = $this->xhrHooks["{$this->pluginInfo->codename}_" . $action]($args);
-                Log::debug(`XHR Hook [$action] executed with args "` . json_encode($args ?: []) . `"`);
+                Log::debug("[{$this->pluginInfo->codename}] XHR Hook [$action] executed with args \"" . json_encode($args ?: []) . "\"");
                 if ($dataReturn != null) {
-                    Log::debug(`XHR Hook [$action] returned "` . json_encode($dataReturn ?: []) . `"`);
+                    Log::debug("[{$this->pluginInfo->codename}] XHR Hook [$action] returned \"" . json_encode($dataReturn ?: []) . "\"");
                     $this->returnJson($dataReturn);
                     return true;
                 }
@@ -168,7 +168,7 @@ class PluginBase
             foreach($this->pluginHooks[$hookName] as $func) {
                 if (is_callable($func)) {
                     $func($args);
-                    Log::debug(`Hook [$hookName] executed`);
+                    Log::debug("Hook [$hookName] executed");
                 }
             }
             return true;
