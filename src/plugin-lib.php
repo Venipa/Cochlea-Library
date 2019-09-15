@@ -204,7 +204,7 @@ class PluginBase
         $codeName = $this->pluginInfo["codename"];
         $hookAssignments = $this->getHookAssignments();
         foreach ($hookAssignments as $hookKey => $methodName) {
-            $this->debug("[$codeName] Registering Hook [$hookKey] => $methodName(...args)");
+            $this->debug("Registering Hook [$hookKey] => $methodName(...args)");
             $this->plugins->add_hook($hookKey, $codeName . "_" . $methodName);
         }
     }
