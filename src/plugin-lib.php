@@ -71,20 +71,16 @@ class PluginBase
         return $url;
     }
     public function debug($msg) {
-        $codeName = $this->pluginInfo->codename;
-        Log::log(__FUNCTION__, "[$codeName] " . $msg);
+        Log::debug("[{$this->pluginInfo->codename}] " . $msg);
     }
     public function error($msg) {
-        $codeName = $this->pluginInfo->codename;
-        Log::log(__FUNCTION__, "[$codeName] " . $msg);
+        Log::error("[{$this->pluginInfo->codename}] " . $msg);
     }
     public function info($msg) {
-        $codeName = $this->pluginInfo->codename;
-        Log::log(__FUNCTION__, "[$codeName] " . $msg);
+        Log::info("[{$this->pluginInfo->codename}] " . $msg);
     }
     public function warning($msg) {
-        $codeName = $this->pluginInfo->codename;
-        Log::log(__FUNCTION__, "[$codeName] " . $msg);
+        Log::warning("[{$this->pluginInfo->codename}] " . $msg);
     }
     /** @return Capsule */
     protected function capsule()
