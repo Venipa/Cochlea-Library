@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Validation\DatabasePresenceVerifier;
 
 $_storagePath = __DIR__ . "/../storage";
-
+$config = require_once(__DIR__ . "/../config.php");
 $app = new Container();
 
 Facade::setFacadeApplication($app);
@@ -41,10 +41,11 @@ $app->singleton('filesystem', function() use($app, $_storagePath) {
         'root' => $_storagePath
     ]);
 });
-$app->singleton('log', function() use ($app, $_storagePath) {
+$app->singleton('log', function() use ($app, $_storagePath, $config) {
     $logManager = new LogManager($app, [
         "storagePath" => $_storagePath,
-        "logging.default" => "single"
+        "logging.default" => "single",
+        "level" => $config["logLevel"]
     ]);
     return $logManager;
 });

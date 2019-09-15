@@ -63,7 +63,7 @@ class LogManager implements LoggerInterface
             'single' => [
                 'driver' => 'single',
                 'path' => $config["storagePath"] . "/logs/app.log",
-                'level' => 'debug',
+                'level' => $config["level"] ?: 'debug',
             ]
         ];
     }
