@@ -70,6 +70,22 @@ class PluginBase
         $url = preg_replace('/(&|\?)' . preg_quote($param) . '=[^&]*&/', '$1', $url);
         return $url;
     }
+    public function debug($msg) {
+        $codeName = $this->pluginInfo->codename;
+        Log::log(__FUNCTION__, "[$codeName] " . $msg);
+    }
+    public function error($msg) {
+        $codeName = $this->pluginInfo->codename;
+        Log::log(__FUNCTION__, "[$codeName] " . $msg);
+    }
+    public function info($msg) {
+        $codeName = $this->pluginInfo->codename;
+        Log::log(__FUNCTION__, "[$codeName] " . $msg);
+    }
+    public function warning($msg) {
+        $codeName = $this->pluginInfo->codename;
+        Log::log(__FUNCTION__, "[$codeName] " . $msg);
+    }
     /** @return Capsule */
     protected function capsule()
     {
@@ -156,9 +172,9 @@ class PluginBase
             if (in_array("{$this->pluginInfo->codename}_" . $this->myBB->get_input('action'), array_keys($this->xhrHooks))) {
                 $action = $this->myBB->get_input('action');
                 $dataReturn = $this->xhrHooks["{$this->pluginInfo->codename}_" . $action]($args);
-                Log::debug("[{$this->pluginInfo->codename}] XHR Hook [$action] executed with args \"" . json_encode($args ?: []) . "\"");
+                $this->debug("[{$this->pluginInfo->codename}] XHR Hook [$action] executed with args \"" . json_encode($args ?: []) . "\"");
                 if ($dataReturn != null) {
-                    Log::debug("[{$this->pluginInfo->codename}] XHR Hook [$action] returned \"" . json_encode($dataReturn ?: []) . "\"");
+                    $this->debug("[{$this->pluginInfo->codename}] XHR Hook [$action] returned \"" . json_encode($dataReturn ?: []) . "\"");
                     $this->returnJson($dataReturn);
                     return true;
                 }
@@ -168,7 +184,7 @@ class PluginBase
             foreach($this->pluginHooks[$hookName] as $func) {
                 if (is_callable($func)) {
                     $func($args);
-                    Log::debug("Hook [$hookName] executed");
+                    $this->debug("Hook [$hookName] executed");
                 }
             }
             return true;
@@ -192,7 +208,7 @@ class PluginBase
         $codeName = $this->pluginInfo["codename"];
         $hookAssignments = $this->getHookAssignments();
         foreach ($hookAssignments as $hookKey => $methodName) {
-            Log::debug("[$codeName] Registering Hook [$hookKey] => $methodName(...args)");
+            $this->debug("[$codeName] Registering Hook [$hookKey] => $methodName(...args)");
             $this->plugins->add_hook($hookKey, $codeName . "_" . $methodName);
         }
     }
