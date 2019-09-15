@@ -76,7 +76,7 @@ class PluginBase
     public function error($msg) {
         Log::error("[{$this->pluginInfo['codename']}] " . $msg);
     }
-    public function info($msg) {
+    public function information($msg) {
         Log::info("[{$this->pluginInfo['codename']}] " . $msg);
     }
     public function warning($msg) {
