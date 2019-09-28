@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Factory as ValidationFactory;
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\App;
@@ -41,6 +42,12 @@ $app->singleton('filesystem', function() use($app, $_storagePath) {
         'root' => $_storagePath
     ]);
 });
+$app->bindIf('files', function () {
+    return new Filesystem();
+}, true);
+$app->bindIf('events', function () {
+    return new Dispatcher();
+}, true);
 $app->singleton('log', function() use ($app, $_storagePath, $config) {
     $logManager = new LogManager($app, [
         "storagePath" => $_storagePath,
@@ -56,6 +63,10 @@ $app->singleton('validator', function () use ($app) {
     $validator = new ValidationFactory($translator, $app);
     $validator->setPresenceVerifier(new DatabasePresenceVerifier(MyBBUsers::getConnectionResolver()));
     return $validator;
+});
+$app->singleton('config', function () {
+    $config = new \Illuminate\Config\Repository();
+    return $config;
 });
 class_alias(Illuminate\Support\Facades\Validator::class, 'Validator');
 class_alias(Illuminate\Support\Facades\Hash::class, 'Hash');

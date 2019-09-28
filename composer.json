@@ -10,7 +10,8 @@
     "illuminate/validation": "^5.8",
     "illuminate/log": "5.8",
     "league/flysystem": "^1.0",
-    "monolog/monolog": "1.25.1"
+    "monolog/monolog": "1.25.1",
+    "illuminate/config": "5.8"
   },
   "license": "GPLv3",
   "authors": [
